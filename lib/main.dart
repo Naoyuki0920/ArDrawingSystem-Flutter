@@ -1,9 +1,8 @@
 import 'dart:io';
 
-import 'package:ar_drawing_system/bluetooth_off_screen.dart';
-import 'package:ar_drawing_system/find_devices_screen.dart';
+import 'package:ar_drawing_system/connect_bluetooth.dart';
+import 'package:ar_drawing_system/drawing_ar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 void main() {
@@ -23,25 +22,43 @@ void main() {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
+  MyAppState createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  int _selectedIndex = 0;
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-      ),
-      home: StreamBuilder<BluetoothState>(
-          stream: FlutterBluePlus.instance.state,
-          initialData: BluetoothState.unknown,
-          builder: (c, snapshot) {
-            final state = snapshot.data;
-            if (state == BluetoothState.on) {
-              return const FindDevicesScreen();
-            }
-            return BluetoothOffScreen(state: state);
-          }),
-    );
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          useMaterial3: true,
+        ),
+        home: Scaffold(
+          bottomNavigationBar: NavigationBar(
+              onDestinationSelected: (int index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              selectedIndex: _selectedIndex,
+              destinations: const [
+                NavigationDestination(
+                    icon: Icon(Icons.bluetooth_outlined),
+                    selectedIcon: Icon(Icons.bluetooth),
+                    label: '接続'),
+                NavigationDestination(
+                    icon: Icon(Icons.search_outlined),
+                    selectedIcon: Icon(Icons.search),
+                    label: 'AR')
+              ]),
+          body: IndexedStack(
+              index: _selectedIndex,
+              children: const [ConnectBluetooth(), DrawingAR()]),
+        ));
   }
 }
