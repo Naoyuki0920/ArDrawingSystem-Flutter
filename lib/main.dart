@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:ar_drawing_system/connect_bluetooth.dart';
-import 'package:ar_drawing_system/drawing_ar.dart';
+import 'package:ar_drawing_system/screens/ble_communication.dart';
+import 'package:ar_drawing_system/screens/drawing_ar.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -52,13 +53,19 @@ class MyAppState extends State<MyApp> {
                     selectedIcon: Icon(Icons.bluetooth),
                     label: '接続'),
                 NavigationDestination(
+                    icon: Icon(Icons.bluetooth_connected_outlined),
+                    selectedIcon: Icon(Icons.bluetooth_connected),
+                    label: 'BLE'),
+                NavigationDestination(
                     icon: Icon(Icons.search_outlined),
                     selectedIcon: Icon(Icons.search),
                     label: 'AR')
               ]),
-          body: IndexedStack(
-              index: _selectedIndex,
-              children: const [ConnectBluetooth(), DrawingAR()]),
+          body: IndexedStack(index: _selectedIndex, children: const [
+            ConnectBluetooth(),
+            BleCommunication(),
+            DrawingAR()
+          ]),
         ));
   }
 }

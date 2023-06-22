@@ -1,5 +1,5 @@
 import 'package:ar_drawing_system/bluetooth_off_screen.dart';
-import 'package:ar_drawing_system/find_devices_screen.dart';
+import 'package:ar_drawing_system/screens/find_devices_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
